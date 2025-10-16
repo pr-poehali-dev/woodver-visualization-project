@@ -1,10 +1,20 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Icon from "@/components/ui/icon";
 
 const Index = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const menuItems = [
+    { href: "#production", label: "Производство" },
+    { href: "#products", label: "Продукция" },
+    { href: "#advantages", label: "Преимущества" },
+    { href: "#contact", label: "Контакты" },
+  ];
   return (
     <div className="min-h-screen bg-background">
       <header className="fixed top-0 w-full bg-white/90 backdrop-blur-sm z-50 border-b border-border">
@@ -13,22 +23,45 @@ const Index = () => {
             WOODVER.RU
           </div>
           <nav className="hidden md:flex gap-8">
-            <a href="#production" className="text-foreground hover:text-primary transition-colors">
-              Производство
-            </a>
-            <a href="#products" className="text-foreground hover:text-primary transition-colors">
-              Продукция
-            </a>
-            <a href="#advantages" className="text-foreground hover:text-primary transition-colors">
-              Преимущества
-            </a>
-            <a href="#contact" className="text-foreground hover:text-primary transition-colors">
-              Контакты
-            </a>
+            {menuItems.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="text-foreground hover:text-primary transition-colors"
+              >
+                {item.label}
+              </a>
+            ))}
           </nav>
-          <Button className="bg-primary text-white hover:bg-primary/90">
-            Заказать звонок
-          </Button>
+          <div className="flex items-center gap-4">
+            <Button className="hidden md:block bg-primary text-white hover:bg-primary/90">
+              Заказать звонок
+            </Button>
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                  <Icon name="Menu" size={24} />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                <nav className="flex flex-col gap-6 mt-8">
+                  {menuItems.map((item) => (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className="text-xl font-medium text-foreground hover:text-primary transition-colors"
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+                  <Button className="bg-primary text-white hover:bg-primary/90 mt-4">
+                    Заказать звонок
+                  </Button>
+                </nav>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </header>
 
